@@ -2,7 +2,7 @@
 
 **Customer security questionnaire automation — classify, map to evidence, draft, and govern.**
 
-**▶ Live demo: _coming soon_** · **Highlights & decisions: [docs/highlights.md](./docs/highlights.md)**
+**▶ Live demo: [trustdesk-two.vercel.app](https://trustdesk-two.vercel.app/)** · **Highlights & decisions: [docs/highlights.md](./docs/highlights.md)**
 
 Every enterprise deal arrives with a security questionnaire — encryption, access control, incident response, privacy, AI usage — and Security, Sales, Legal, and Privacy answer the same questions over and over, by hand, under deal pressure. TrustDesk ingests each question, maps it to approved control evidence, drafts a response, scores its confidence, and routes anything sensitive or stale-backed to a human — with SLA, effort-saved, and revenue visibility for leadership.
 

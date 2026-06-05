@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     "Why TrustDesk exists, how its deterministic confidence engine works, and the security posture behind this read-only synthetic demo.",
 };
 
+const LIVE_URL = "https://trustdesk-two.vercel.app/";
 const REPO_URL = "https://github.com/Fischer-Product-Lab/trustdesk";
 const PRD_URL = `${REPO_URL}/blob/main/docs/trustdesk-prd.md`;
 const THREAT_MODEL_URL = `${REPO_URL}/blob/main/docs/threat-model.md`;
@@ -75,7 +76,16 @@ export default function AboutPage() {
         </h1>
         <p className="mt-2 text-ink-muted">
           A portfolio demonstration by Trevor Fischer · Fischer Product Lab —
-          secure AI systems for trust, risk, and enterprise execution.
+          secure AI systems for trust, risk, and enterprise execution.{" "}
+          <a
+            href={LIVE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold-soft transition-colors hover:text-gold"
+          >
+            Live demo
+          </a>
+          .
         </p>
       </header>
 
