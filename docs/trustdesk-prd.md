@@ -2,7 +2,7 @@
 
 **Product:** TrustDesk — customer security questionnaire automation
 **Author:** Trevor Fischer · Fischer Product Lab
-**Status:** V1 in build (read-only, synthetic demo)
+**Status:** V1 shipped (read-only, synthetic demo) · [Live](https://trustdesk-two.vercel.app/)
 **Last updated:** 2026-06
 
 ---
@@ -134,8 +134,9 @@ ship with the repository.
 
 ## 10. Launch plan
 
-- **V1:** read-only synthetic demo on Vercel, auto-deploy from `main`, hardened repo
-  (Dependabot, secret scanning, CodeQL, branch protection + PR workflow).
+- **V1 (done):** read-only synthetic demo on Vercel ([live](https://trustdesk-two.vercel.app/)),
+  auto-deploy from `main`, hardened repo (Dependabot, secret scanning, CodeQL, branch
+  protection + PR workflow).
 
 ## 11. Roadmap
 

@@ -3,6 +3,8 @@
 A concise tour of what TrustDesk is, the decisions behind it, and what it demonstrates.
 Part of **Fischer Product Lab** — secure AI systems for trust, risk, and enterprise execution.
 
+**Live demo:** https://trustdesk-two.vercel.app/
+
 ---
 
 ## Overview

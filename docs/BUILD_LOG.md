@@ -5,6 +5,13 @@ fixes along the way. Companion to the [PRD](./trustdesk-prd.md) and [highlights]
 
 ---
 
+## Status
+
+- **Live demo:** https://trustdesk-two.vercel.app/
+- **Repo:** `Fischer-Product-Lab/trustdesk` (GitHub)
+- **Production branch:** `main` (Vercel auto-deploys on every push to `main`)
+- **V1 scope:** complete and deployed.
+
 ## Context
 
 TrustDesk is the second product in **Fischer Product Lab**, built to the same playbook as
