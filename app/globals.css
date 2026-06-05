@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/*
+  TrustDesk design system — "executive trust command center".
+  Defining colors/fonts here (Tailwind v4 @theme) generates utilities
+  like bg-canvas, text-ink, border-hairline, font-display, etc.
+  Shares the Fischer Product Lab palette: near-black navy, ivory, gold.
+*/
+@theme {
+  /* Surfaces (near-black navy, layered) */
+  --color-canvas: #0b0f17;
+  --color-surface: #0f1521;
+  --color-surface-2: #141c2b;
+  --color-hairline: #1e2738;
+  --color-hairline-strong: #2b3754;
+
+  /* Text (ivory) */
+  --color-ink: #f5efe1;
+  --color-ink-muted: #a7aebc;
+  --color-ink-faint: #6c7689;
+
+  /* Accents */
+  --color-gold: #c9a45c;
+  --color-gold-soft: #e3c894;
+  --color-data: #9cc9ff;
+
+  /* Answer-status + evidence colors */
+  --color-approved: #5fd6a0; /* Auto-Approved / Current evidence */
+  --color-suggested: #9cc9ff; /* Suggested draft */
+  --color-review: #e6a560; /* Needs Review / Expiring Soon */
+  --color-danger: #e8736f; /* Escalate / Expired evidence */
+
+  /* Fonts (wired to next/font variables in layout.tsx) */
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-canvas);
+  background-image:
+    radial-gradient(60rem 60rem at 12% -10%, rgba(201, 164, 92, 0.06), transparent 60%),
+    radial-gradient(50rem 50rem at 100% 0%, rgba(156, 201, 255, 0.05), transparent 55%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: rgba(201, 164, 92, 0.28);
+  color: var(--color-ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-hairline-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-hairline-strong);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
