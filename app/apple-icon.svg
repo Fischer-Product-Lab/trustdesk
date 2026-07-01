@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="TrustDesk">
+  <rect width="180" height="180" rx="40" fill="#0f1521"/>
+  <path
+    d="M90 28 128 48v42c0 28.8-28.8 52.8-42 61.8-13.2-9-42-33-42-61.8V48L90 28z"
+    fill="none"
+    stroke="#c9a45c"
+    stroke-width="9"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M66 88 80 102 108 72"
+    fill="none"
+    stroke="#c9a45c"
+    stroke-width="9"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
