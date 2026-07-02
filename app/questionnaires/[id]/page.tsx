@@ -83,7 +83,7 @@ export default async function QuestionnaireDetailPage({
   const days = daysUntilDue(questionnaire);
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6">
+    <div className="mx-auto max-w-6xl space-y-6">
       <Link
         href="/questionnaires"
         className="inline-flex items-center gap-1.5 text-sm text-ink-muted transition-colors hover:text-ink"
@@ -129,38 +129,26 @@ export default async function QuestionnaireDetailPage({
             label: f.label,
             weight: f.weight,
             value: f.valueFor(question, mapped, AS_OF_DATE),
-            description: f.description,
-            derived: f.key === "evidenceFreshness",
           }));
 
           return (
             <article
               key={question.id}
               id={question.id}
-              className="scroll-mt-20 rounded-xl border border-hairline bg-surface p-6"
+              className="scroll-mt-20 space-y-6"
             >
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div className="min-w-0">
-                  <span className="text-[11px] uppercase tracking-wider text-ink-faint">
-                    {question.category} · {question.id}
-                  </span>
-                  <h2 className="mt-1 font-display text-lg font-semibold text-ink">
-                    {question.prompt}
-                  </h2>
-                </div>
-                <div className="flex shrink-0 items-center gap-4">
-                  <ConfidenceRing
-                    score={result.score}
-                    status={result.status}
-                    size={96}
-                    stroke={9}
-                  />
-                  <StatusBadge status={result.status} />
-                </div>
+              {/* Question prompt */}
+              <div>
+                <span className="text-[11px] uppercase tracking-wider text-ink-faint">
+                  {question.category} · {question.id}
+                </span>
+                <h2 className="mt-1 font-display text-lg font-semibold text-ink">
+                  {question.prompt}
+                </h2>
               </div>
 
               {/* Drafted answer */}
-              <div className="mt-4 rounded-lg border border-hairline bg-surface-2/40 p-4">
+              <div className="rounded-xl border border-hairline bg-surface p-4">
                 <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-ink-faint">
                   <FileText className="h-3.5 w-3.5" />
                   Drafted response
@@ -170,66 +158,70 @@ export default async function QuestionnaireDetailPage({
                 </p>
               </div>
 
-              <div className="mt-5 grid gap-6 lg:grid-cols-2">
-                {/* Confidence factors */}
-                <div>
-                  <h3 className="mb-3 text-sm font-medium text-ink">
-                    Confidence factors
+              {/* Confidence scorecard — mirrors AgentOps launch-readiness layout */}
+              <section className="grid gap-6 lg:grid-cols-3">
+                <div className="flex flex-col items-center gap-4 rounded-xl border border-hairline bg-surface p-6">
+                  <h3 className="self-start font-display text-lg font-semibold text-ink">
+                    Answer confidence
                   </h3>
-                  <FactorBreakdown factors={factors} />
-                </div>
-
-                {/* Evidence + routing */}
-                <div className="space-y-5">
-                  <div>
-                    <h3 className="mb-3 text-sm font-medium text-ink">
-                      Mapped evidence
-                    </h3>
-                    {mapped.length === 0 ? (
-                      <p className="text-sm text-ink-faint">
-                        No control mapped — cannot be answered from the library.
-                      </p>
-                    ) : (
-                      <ul className="space-y-2">
-                        {mapped.map((control) => (
-                          <li
-                            key={control.id}
-                            className="flex items-center justify-between gap-3 rounded-lg border border-hairline bg-surface-2/30 px-3 py-2"
-                          >
-                            <Link
-                              href={`/controls#${control.id}`}
-                              className="min-w-0"
-                            >
-                              <span className="block font-mono text-xs text-gold-soft">
-                                {control.id}
-                              </span>
-                              <span className="block truncate text-sm text-ink-muted">
-                                {control.title}
-                              </span>
-                            </Link>
-                            <EvidenceBadge status={evidenceStatusFor(control)} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-2.5 rounded-lg border border-hairline bg-surface-2/30 px-3 py-2.5 text-sm">
+                  <ConfidenceRing score={result.score} status={result.status} />
+                  <StatusBadge status={result.status} />
+                  <div className="flex w-full items-center gap-2.5 rounded-lg border border-hairline bg-surface-2/30 px-3 py-2.5 text-sm">
                     <UserCheck className="h-4 w-4 shrink-0 text-gold" />
                     <span className="text-ink-faint">Routed to</span>
-                    <span className="font-medium text-ink">
-                      {result.reviewer}
-                    </span>
+                    <span className="font-medium text-ink">{result.reviewer}</span>
                   </div>
                 </div>
-              </div>
+
+                <div className="rounded-xl border border-hairline bg-surface p-6 lg:col-span-2">
+                  <h3 className="font-display text-lg font-semibold text-ink">
+                    Confidence factors
+                  </h3>
+                  <p className="mb-4 mt-1 text-sm text-ink-faint">
+                    Five weighted factors scored 0–4. Evidence Freshness is
+                    derived live from mapped control expiry dates.
+                  </p>
+                  <FactorBreakdown factors={factors} />
+                </div>
+              </section>
+
+              {/* Mapped evidence */}
+              <section className="rounded-xl border border-hairline bg-surface p-6">
+                <h3 className="font-display text-lg font-semibold text-ink">
+                  Mapped evidence
+                </h3>
+                {mapped.length === 0 ? (
+                  <p className="mt-3 text-sm text-ink-faint">
+                    No control mapped — cannot be answered from the library.
+                  </p>
+                ) : (
+                  <ul className="mt-4 space-y-2">
+                    {mapped.map((control) => (
+                      <li
+                        key={control.id}
+                        className="flex items-center justify-between gap-3 rounded-lg border border-hairline bg-surface-2/30 px-3 py-2"
+                      >
+                        <Link href={`/controls#${control.id}`} className="min-w-0">
+                          <span className="block font-mono text-xs text-gold-soft">
+                            {control.id}
+                          </span>
+                          <span className="block truncate text-sm text-ink-muted">
+                            {control.title}
+                          </span>
+                        </Link>
+                        <EvidenceBadge status={evidenceStatusFor(control)} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
 
               {/* Why this verdict */}
-              <div className="mt-5 border-t border-hairline/60 pt-4">
-                <h3 className="mb-3 text-sm font-medium text-ink">
+              <section className="rounded-xl border border-hairline bg-surface p-6">
+                <h3 className="font-display text-lg font-semibold text-ink">
                   Why this verdict
                 </h3>
-                <ul className="space-y-2">
+                <ul className="mt-4 space-y-2.5">
                   {result.reasons.map((reason, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm">
                       {cleared ? (
@@ -241,7 +233,7 @@ export default async function QuestionnaireDetailPage({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </section>
             </article>
           );
         })}

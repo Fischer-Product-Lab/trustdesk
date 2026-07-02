@@ -9,25 +9,16 @@ export interface FactorRow {
   label: string;
   weight: number;
   value: number; // 0–4
-  description: string;
-  derived?: boolean;
 }
 
-/** The confidence factors as a labeled bar breakdown (0–4 each, with weight). */
+/** Confidence factors as a labeled bar breakdown — mirrors AgentOps RubricBreakdown. */
 export function FactorBreakdown({ factors }: { factors: FactorRow[] }) {
   return (
     <ul className="space-y-3.5">
       {factors.map((factor) => (
         <li key={factor.label}>
           <div className="flex items-baseline justify-between gap-3 text-sm">
-            <span className="text-ink-muted">
-              {factor.label}
-              {factor.derived && (
-                <span className="ml-2 rounded-full border border-data/30 bg-data/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-data">
-                  derived
-                </span>
-              )}
-            </span>
+            <span className="text-ink-muted">{factor.label}</span>
             <span className="shrink-0 tabular-nums text-ink-faint">
               {factor.value}/4
               <span className="ml-2 text-ink-faint/70">
@@ -41,7 +32,6 @@ export function FactorBreakdown({ factors }: { factors: FactorRow[] }) {
               style={{ width: `${(factor.value / 4) * 100}%` }}
             />
           </div>
-          <p className="mt-1 text-xs text-ink-faint">{factor.description}</p>
         </li>
       ))}
     </ul>

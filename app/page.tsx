@@ -4,9 +4,6 @@ import {
   ArrowRight,
   ClipboardList,
   Clock,
-  DollarSign,
-  Scale,
-  Sparkles,
   Zap,
 } from "lucide-react";
 import { questionnaires } from "@/data/questionnaires";
@@ -15,8 +12,12 @@ import { computePortfolio, scoreQuestionnaires } from "@/lib/metrics";
 import { StatusBadge } from "@/components/status-badge";
 import { SlaBadge } from "@/components/sla-badge";
 import { StatusDonut } from "@/components/dashboard/status-donut";
-import { CategoryBar } from "@/components/dashboard/category-bar";
+import {
+  CategoryBar,
+  type CategoryBarRow,
+} from "@/components/dashboard/category-bar";
 import { ANSWER_STATUS_ORDER } from "@/lib/metrics";
+import type { QuestionCategory } from "@/lib/types";
 
 const currency = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -25,18 +26,51 @@ const currency = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
+const CATEGORY_SHORT: Record<QuestionCategory, string> = {
+  "Encryption & Data Protection": "Encryption",
+  "Access Control & Identity": "Access control",
+  "Incident Response": "Incident response",
+  "Vulnerability Management": "Vulnerability mgmt",
+  "Privacy & Data Retention": "Privacy",
+  "Cloud & Infrastructure Security": "Cloud security",
+  "AI & Model Governance": "AI governance",
+  "Business Continuity & Resilience": "BC / DR",
+  "Vendor & Third-Party Risk": "Vendor risk",
+  "Compliance & Certifications": "Compliance",
+};
+
+/** Top categories for the bar chart — short axis labels, full names in tooltip. */
+function chartCategories(
+  rows: { category: QuestionCategory; count: number }[],
+  limit = 5,
+): CategoryBarRow[] {
+  const top = rows.slice(0, limit).map(({ category, count }) => ({
+    label: CATEGORY_SHORT[category],
+    fullLabel: category,
+    count,
+  }));
+  const rest = rows.slice(limit);
+  if (rest.length === 0) return top;
+  return [
+    ...top,
+    {
+      label: "Other",
+      fullLabel: rest.map((r) => r.category).join(" · "),
+      count: rest.reduce((sum, r) => sum + r.count, 0),
+    },
+  ];
+}
+
 function KpiCard({
   label,
   value,
   icon: Icon,
   accent = "gold",
-  hint,
 }: {
   label: string;
   value: string | number;
   icon: typeof ClipboardList;
   accent?: "gold" | "approved" | "review" | "data";
-  hint?: string;
 }) {
   const accentClass =
     accent === "approved"
@@ -57,7 +91,6 @@ function KpiCard({
         {value}
       </div>
       <div className="mt-1 text-sm text-ink-muted">{label}</div>
-      {hint && <div className="mt-0.5 text-xs text-ink-faint">{hint}</div>}
     </div>
   );
 }
@@ -71,7 +104,7 @@ export default function DashboardPage() {
     count: m.statusCounts[status],
   }));
 
-  const topCategories = m.categoryCounts.slice(0, 8);
+  const categoryChart = chartCategories(m.categoryCounts);
 
   const slaRank: Record<string, number> = { Overdue: 0, "At Risk": 1 };
   const needsAttention = scored
@@ -85,52 +118,36 @@ export default function DashboardPage() {
           Executive Dashboard
         </h1>
         <p className="mt-2 text-ink-muted">
-          Customer trust at a glance: what&apos;s in flight, how much we&apos;re
-          automating, what&apos;s at SLA risk, and the revenue it supports.
+          {m.totalQuestions} questions across {m.totalQuestionnaires} open
+          questionnaires · {currency.format(m.revenueSupported)} revenue supported
+          · {m.escalations} legal/privacy escalations
         </p>
       </header>
 
-      {/* KPIs */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* KPIs — four primary metrics, matching AgentOps rhythm */}
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           label="Open questionnaires"
           value={m.totalQuestionnaires}
           icon={ClipboardList}
-          hint={`${m.totalQuestions} questions in flight`}
         />
         <KpiCard
           label="Automation rate"
           value={`${m.automationRatePct}%`}
           icon={Zap}
           accent="approved"
-          hint={`${m.draftReadyPct}% draft-ready (incl. suggested)`}
         />
         <KpiCard
           label="SME hours saved"
           value={m.hoursSaved.toLocaleString("en-US")}
           icon={Clock}
           accent="data"
-          hint="Estimated across the open queue"
-        />
-        <KpiCard
-          label="Revenue supported"
-          value={currency.format(m.revenueSupported)}
-          icon={DollarSign}
-          hint="Deal value tied to open requests"
-        />
-        <KpiCard
-          label="Legal / privacy escalations"
-          value={m.escalations}
-          icon={Scale}
-          accent="review"
-          hint="Routed to Privacy or Legal for sign-off"
         />
         <KpiCard
           label="SLA risk"
           value={m.sla.Overdue + m.sla["At Risk"]}
           icon={AlertTriangle}
           accent="review"
-          hint={`${m.sla.Overdue} overdue · ${m.sla["At Risk"]} at risk`}
         />
       </section>
 
@@ -163,7 +180,7 @@ export default function DashboardPage() {
           <p className="mb-2 mt-1 text-sm text-ink-faint">
             Where customer due-diligence questions concentrate.
           </p>
-          <CategoryBar data={topCategories} />
+          <CategoryBar data={categoryChart} />
         </div>
       </section>
 
@@ -219,13 +236,6 @@ export default function DashboardPage() {
           </ul>
         )}
       </section>
-
-      {/* Footer note */}
-      <p className="flex items-center gap-2 text-xs text-ink-faint">
-        <Sparkles className="h-3.5 w-3.5 text-gold/70" />
-        Every metric above is computed from the synthetic questionnaire set by
-        the deterministic confidence engine — no figures are hand-entered.
-      </p>
     </div>
   );
 }

@@ -19,24 +19,24 @@ const TOOLTIP_STYLE = {
   fontSize: 12,
 } as const;
 
-export function CategoryBar({
-  data,
-}: {
-  data: { category: string; count: number }[];
-}) {
+export interface CategoryBarRow {
+  label: string;
+  count: number;
+  /** Full category name — shown in the tooltip when the axis label is shortened. */
+  fullLabel?: string;
+}
+
+export function CategoryBar({ data }: { data: CategoryBarRow[] }) {
   const [mounted, setMounted] = useState(false);
-  // Defer the mount flag to a frame after paint so Recharts only renders on the
-  // client (no layout to measure during static generation) without calling
-  // setState synchronously inside the effect body.
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
 
-  if (!mounted) return <div className="h-80" aria-hidden />;
+  if (!mounted) return <div className="h-72" aria-hidden />;
 
   return (
-    <div className="h-80">
+    <div className="h-72">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
@@ -54,10 +54,10 @@ export function CategoryBar({
           />
           <YAxis
             type="category"
-            dataKey="category"
+            dataKey="label"
             stroke="#a7aebc"
-            fontSize={11}
-            width={190}
+            fontSize={12}
+            width={140}
             tickLine={false}
             axisLine={false}
           />
@@ -65,9 +65,13 @@ export function CategoryBar({
             cursor={{ fill: "rgba(245,239,225,0.04)" }}
             contentStyle={TOOLTIP_STYLE}
             itemStyle={{ color: "#f5efe1" }}
+            labelFormatter={(_label, payload) => {
+              const row = payload?.[0]?.payload as CategoryBarRow | undefined;
+              return row?.fullLabel ?? row?.label ?? _label;
+            }}
             formatter={(value) => [`${value} questions`, "Volume"]}
           />
-          <Bar dataKey="count" fill="#c9a45c" radius={[0, 4, 4, 0]} maxBarSize={20} />
+          <Bar dataKey="count" fill="#c9a45c" radius={[0, 4, 4, 0]} maxBarSize={22} />
         </BarChart>
       </ResponsiveContainer>
     </div>
