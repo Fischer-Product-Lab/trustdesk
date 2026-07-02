@@ -1,7 +1,7 @@
 import type { AnswerStatus } from "@/lib/types";
 import { STATUS_HEX } from "@/components/status-badge";
 
-/** Pure SVG confidence ring — no client JS needed. */
+/** Pure SVG confidence ring — no client JS needed. Matches AgentOps ScoreRing. */
 export function ConfidenceRing({
   score,
   status,
@@ -17,11 +17,6 @@ export function ConfidenceRing({
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - score / 100);
   const color = STATUS_HEX[status];
-
-  // Scale the inner text with the ring so it always fits inside the stroke —
-  // a fixed label gets letter-spaced wider than a small ring's inner diameter.
-  const scoreFontSize = Math.round(size * 0.3);
-  const labelFontSize = Math.max(8, Math.round(size * 0.082));
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
@@ -51,18 +46,12 @@ export function ConfidenceRing({
           strokeDashoffset={offset}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
-        <span
-          className="font-display font-semibold leading-none tabular-nums text-ink"
-          style={{ fontSize: scoreFontSize }}
-        >
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="font-display text-4xl font-semibold tabular-nums text-ink">
           {score}
         </span>
-        <span
-          className="uppercase leading-none text-ink-faint"
-          style={{ fontSize: labelFontSize, letterSpacing: "0.12em" }}
-        >
-          confidence
+        <span className="text-[10px] uppercase tracking-[0.2em] text-ink-faint">
+          / 100
         </span>
       </div>
     </div>
