@@ -29,7 +29,8 @@ Five screens:
 
 | Route | Screen | Purpose |
 | --- | --- | --- |
-| `/` | **Executive Dashboard** | Open questionnaires, automation rate, hours saved, revenue supported, legal/privacy escalations, SLA risk, and top control categories. |
+| `/` | **Marketing** | Cinematic portfolio landing — hero, product chrome, how the engine decides. Visual language in [`DESIGN.md`](./DESIGN.md). |
+| `/demo` | **Executive Dashboard** | Open questionnaires, automation rate, hours saved, revenue supported, legal/privacy escalations, SLA risk, and top control categories. |
 | `/questionnaires` | **Questionnaire Workspace** | Every in-flight question with confidence, status, mapped evidence, and reviewer — searchable and filterable. |
 | `/questionnaires/[id]` | **Questionnaire Detail** | One customer's request in full: each drafted answer, its five confidence factors, mapped evidence with live freshness, routing, and reasons. |
 | `/controls` | **Control & Evidence Library** | Approved response language with framework mappings, owners, and freshness — stale evidence surfaced first. |
@@ -86,17 +87,20 @@ pnpm test
 
 ```
 trustdesk/
+├── DESIGN.md                        # Locked tokens, type scale, kill list
 ├── app/
-│   ├── page.tsx                     # Executive dashboard (/)
-│   ├── questionnaires/
-│   │   ├── page.tsx                 # Questionnaire workspace
-│   │   └── [id]/page.tsx            # Questionnaire detail
-│   ├── controls/page.tsx            # Control & evidence library
-│   ├── brief/page.tsx               # Executive brief
-│   ├── about/page.tsx               # About this demo
-│   ├── layout.tsx                   # Root layout + app shell
+│   ├── (marketing)/page.tsx         # Cinematic landing (/)
+│   ├── (demo)/
+│   │   ├── layout.tsx               # App shell for the live demo
+│   │   ├── demo/page.tsx            # Executive dashboard (/demo)
+│   │   ├── questionnaires/          # Workspace + detail
+│   │   ├── controls/page.tsx
+│   │   ├── brief/page.tsx
+│   │   └── about/page.tsx
+│   ├── layout.tsx                   # Root fonts + metadata
 │   └── globals.css                  # Design system (Tailwind v4 theme)
 ├── components/
+│   ├── marketing/                   # Landing hero + product window
 │   ├── layout/                      # Sidebar, top bar, app shell
 │   ├── dashboard/                   # Status donut, category bar
 │   ├── question/                    # Confidence ring, factor breakdown

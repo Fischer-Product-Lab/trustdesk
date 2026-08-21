@@ -243,7 +243,7 @@ export default function AboutPage() {
           Built by Trevor Fischer · Fischer Product Lab
         </p>
         <Link
-          href="/"
+          href="/demo"
           className="text-sm text-ink-muted transition-colors hover:text-gold"
         >
           Back to dashboard
