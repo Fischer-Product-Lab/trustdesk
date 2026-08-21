@@ -27,7 +27,6 @@ const STEPS = [
 export function LandingPage() {
   return (
     <div className="marketing">
-      <div className="marketing-light" aria-hidden />
       <div className="marketing-grain" aria-hidden />
 
       <div className="relative z-10 flex min-h-dvh flex-col">
@@ -65,13 +64,13 @@ export function LandingPage() {
             <div className="marketing-rise marketing-rise-delay-3 mt-9 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/demo"
-                className="marketing-type-body inline-flex h-11 items-center rounded-full bg-ivory px-6 font-medium text-navy transition-opacity hover:opacity-90"
+                className="marketing-type-body inline-flex h-11 items-center rounded-sm bg-ivory px-6 font-medium text-navy transition-opacity hover:opacity-90"
               >
                 Open the demo
               </Link>
               <a
                 href="#how-it-decides"
-                className="marketing-type-body inline-flex h-11 items-center rounded-full border border-gold/45 px-6 font-medium text-ivory transition-colors hover:border-gold hover:text-gold"
+                className="marketing-type-body inline-flex h-11 items-center rounded-sm border border-gold/45 px-6 font-medium text-ivory transition-colors hover:border-gold hover:text-gold"
               >
                 See how it decides
               </a>
@@ -79,12 +78,13 @@ export function LandingPage() {
           </section>
 
           <section
-            className="marketing-rise marketing-rise-delay-4 mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6"
+            className="marketing-rise marketing-rise-delay-4 relative mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6"
             aria-label="TrustDesk product"
           >
+            <div className="marketing-light" aria-hidden />
             <Link
               href="/questionnaires/qn-001"
-              className="block rounded-xl outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
+              className="relative z-10 block rounded-xl outline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-gold"
             >
               <span className="sr-only">
                 Open the Northwind Capital questionnaire in the live demo
